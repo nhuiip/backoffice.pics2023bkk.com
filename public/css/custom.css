@@ -1,0 +1,31 @@
+.page-wrapper .page-header .header-wrapper {
+    padding: 25px 30px;
+}
+.page-wrapper .page-body-wrapper .page-body {
+    padding: 15px;
+}
+.page-wrapper.compact-wrapper
+    .page-body-wrapper
+    div.sidebar-wrapper
+    .sidebar-main
+    .simplebar-offset {
+    height: calc(100vh - 150px);
+}
+.page-wrapper.compact-wrapper
+    .page-body-wrapper
+    div.sidebar-wrapper
+    .logo-wrapper
+    img,
+.page-wrapper.compact-wrapper
+    .page-body-wrapper
+    div.sidebar-wrapper
+    .logo-icon-wrapper
+    img {
+    height: 10%;
+}
+.simplebar-content-wrapper {
+    padding-top: 20%;
+}
+.dropdown-menu {
+    background: #ffffff;
+}
