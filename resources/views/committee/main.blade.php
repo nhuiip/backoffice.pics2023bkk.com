@@ -8,7 +8,7 @@
         <div class="card-header pb-0">
             <div class="row">
                 <div class="col-10">
-                    @include('layouts.components.buttons.create', ['url' => route('users.create')])
+                    @include('layouts.components.buttons.create', ['url' => route('committees.create')])
                 </div>
                 <div class="col-2">
                     @include('layouts.components.input-query')
@@ -16,12 +16,15 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" data-url="{{ route('users.jsontable') }}">
+            <table id="dataTable" data-url="{{ route('committees.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Seq</th>
+                        <th></th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Position</th>
+                        <th>Organization</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th></th>
@@ -55,16 +58,25 @@
                     width: '10%'
                 },
                 {
-                    targets: [1,2],
+                    targets: [1],
+                    width: '5%'
+                },
+                {
+                    targets: [2],
+                    width: '5%',
                     orderable: false
                 },
                 {
-                    targets: [3, 4],
+                    targets: [3, 4,5],
+                    orderable: false
+                },
+                {
+                    targets: [6,7],
                     width: '15%',
                     orderable: false
                 },
                 {
-                    targets: [5],
+                    targets: [8],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -74,10 +86,19 @@
                     data: 'id'
                 },
                 {
+                    data: 'seq'
+                },
+                {
+                    data: 'image_url'
+                },
+                {
                     data: 'name'
                 },
                 {
-                    data: 'email'
+                    data: 'position'
+                },
+                {
+                    data: 'organization'
                 },
                 {
                     data: 'created_at'

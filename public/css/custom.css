@@ -29,3 +29,23 @@
 .dropdown-menu {
     background: #ffffff;
 }
+.page-wrapper.compact-wrapper
+    .page-body-wrapper
+    div.sidebar-wrapper
+    .sidebar-main
+    .sidebar-links
+    .simplebar-wrapper
+    .simplebar-mask
+    .simplebar-content-wrapper
+    .simplebar-content
+    > li
+    .sidebar-link.menu-active {
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    position: relative;
+    margin-bottom: 10px;
+    background-color: #f4f6fd;
+}
+.menu-active span {
+    color: #6362e7 !important;
+}

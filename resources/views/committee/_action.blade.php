@@ -4,10 +4,8 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('users.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Edit</a>
+        <li><a class="dropdown-item" href="{{ route('committees.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Edit</a>
         </li>
-        <li><a class="dropdown-item" href="{{ route('users.resetpassword', $id) }}"><i
-                    class="fa fa-refresh"></i>&nbsp; Reset password</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
@@ -16,7 +14,7 @@
                 Delete</a></li>
     </ul>
 </div>
-<form id="delete-form-{{ $id }}" method="post" action="{{ route('users.destroy', $id) }}">
+<form id="delete-form-{{ $id }}" method="post" action="{{ route('committees.destroy', $id) }}">
     @csrf
     @method('DELETE')
 </form>
