@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="form-group">
                 <div class="row mb-3">
-                    <div class="col-1">
+                    <div class="col-3">
                         <label class="form-label"><span class="text-danger">*</span> Seq</label>
                         @if (empty($data))
                             {{ Form::number('seq', $nextSeq, ['class' => 'form-control', 'required', 'placeholder' => 'Enter seq']) }}
@@ -24,7 +24,7 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="col-5">
+                    <div class="col-3">
                         <label class="form-label">Image</label>
                         {{ Form::file('image', ['class' => 'form-control', 'accept'=>'image/*']) }}
                         @error('image')
@@ -79,12 +79,4 @@
         </div>
     </div>
     {!! Form::close() !!}
-@endsection
-@section('script')
-    <script>
-        function rondomPassword(e) {
-            let password = Math.random().toString(36).slice(-e);
-            $('.password').val(password)
-        }
-    </script>
 @endsection

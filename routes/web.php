@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::get('/users/{id}/resetpassword', [UserController::class, 'resetpassword']
 // !data-table
 Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('users.jsontable');
 Route::get('/committees/jsontable', [CommitteeController::class, 'jsontable'])->name('committees.jsontable');
+Route::get('/hotels/jsontable', [HotelController::class, 'jsontable'])->name('hotels.jsontable');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
+Route::resource('hotels', HotelController::class);
