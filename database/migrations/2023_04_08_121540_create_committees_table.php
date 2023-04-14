@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('position');
             $table->string('organization');
             $table->integer('seq');
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

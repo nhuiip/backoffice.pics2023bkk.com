@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('hotelId')->unsigned();
             $table->foreign('hotelId')->references('id')->on('hotels')->onDelete('cascade');
             $table->boolean('is_cover');
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }
