@@ -11,34 +11,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Committee
+ * Class News
  * 
  * @property int $id
  * @property string $name
- * @property string $position
- * @property string $organization
- * @property int $seq
+ * @property string $content
  * @property string|null $image_url
+ * @property bool $is_announcement
+ * @property int $visit
+ * @property int $favorite
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  *
  * @package App\Models
  */
-class Committee extends Model
+class News extends Model
 {
 	use SoftDeletes;
-	protected $table = 'committees';
+	protected $table = 'news';
 
 	protected $casts = [
-		'seq' => 'int'
+		'is_announcement' => 'bool',
+		'visit' => 'int',
+		'favorite' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
-		'position',
-		'organization',
-		'seq',
-		'image_url'
+		'content',
+		'image_url',
+		'is_announcement',
+		'visit',
+		'favorite'
 	];
 }

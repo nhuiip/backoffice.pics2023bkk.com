@@ -3,6 +3,7 @@
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,8 +33,10 @@ Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('user
 Route::get('/committees/jsontable', [CommitteeController::class, 'jsontable'])->name('committees.jsontable');
 Route::get('/hotels/jsontable', [HotelController::class, 'jsontable'])->name('hotels.jsontable');
 Route::get('/banners/jsontable', [BannerController::class, 'jsontable'])->name('banners.jsontable');
+Route::get('/news/jsontable', [NewsController::class, 'jsontable'])->name('news.jsontable');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
 Route::resource('hotels', HotelController::class);
 Route::resource('banners', BannerController::class);
+Route::resource('news', NewsController::class);
