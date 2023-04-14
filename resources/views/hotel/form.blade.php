@@ -5,9 +5,9 @@
 @endsection
 @section('content')
     @if (empty($data))
-        {{ Form::open(['novalidate', 'route' => 'hotels.store', 'class' => $errors->any() ? 'was-validated form-horizontal' : 'needs-validation form-horizontal', 'id' => 'account-form', 'method' => 'post', 'files' => true]) }}
+        {{ Form::open(['novalidate', 'route' => 'hotels.store', 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'post', 'files' => true]) }}
     @else
-        {{ Form::model($data, ['novalidate', 'route' => ['hotels.update', $data->id], 'class' => $errors->any() ? 'was-validated form-horizontal' : 'needs-validation form-horizontal', 'id' => 'account-form', 'method' => 'put', 'files' => true]) }}
+        {{ Form::model($data, ['novalidate', 'route' => ['hotels.update', $data->id], 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'put', 'files' => true]) }}
     @endif
     <div class="card">
         <div class="card-body">

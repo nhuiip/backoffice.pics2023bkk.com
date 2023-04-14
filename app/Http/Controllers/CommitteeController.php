@@ -61,7 +61,7 @@ class CommitteeController extends Controller
                 'position.max' => 'Position cannot be longer than 100 characters.',
                 'organization.required' => 'Please enter organization.',
                 'organization.max' => 'Organization cannot be longer than 100 characters.',
-                'seq.required' => 'Please enter seqใ',
+                'seq.required' => 'Please enter seq',
                 'seq.integer' => 'Please enter numbers only.',
                 'seq.min' => 'Please enter at least 1 number.',
                 'seq.max' => 'Please enter no more than ' . $maxSeq,
@@ -129,7 +129,7 @@ class CommitteeController extends Controller
                 'position.max' => 'Position cannot be longer than 100 characters.',
                 'organization.required' => 'Please enter organization.',
                 'organization.max' => 'Organization cannot be longer than 100 characters.',
-                'seq.required' => 'Please enter seqใ',
+                'seq.required' => 'Please enter seq',
                 'seq.integer' => 'Please enter numbers only.',
                 'seq.min' => 'Please enter at least 1 number.',
                 'seq.max' => 'Please enter no more than ' . $maxSeq,
@@ -214,7 +214,7 @@ class CommitteeController extends Controller
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
             ->editColumn('image_url', function ($data) {
-                return '<center><img class="rounded-circle w-100" src="'.$data->image_url.'" alt=""></center>';
+                return '<center><img class="rounded-circle w-100" src="' . $data->image_url . '" alt=""></center>';
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';

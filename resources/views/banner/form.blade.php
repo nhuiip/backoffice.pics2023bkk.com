@@ -5,9 +5,9 @@
 @endsection
 @section('content')
     @if (empty($data))
-        {{ Form::open(['novalidate', 'route' => 'committees.store', 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'post', 'files' => true]) }}
+        {{ Form::open(['novalidate', 'route' => 'banners.store', 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'post', 'files' => true]) }}
     @else
-        {{ Form::model($data, ['novalidate', 'route' => ['committees.update', $data->id], 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'put', 'files' => true]) }}
+        {{ Form::model($data, ['novalidate', 'route' => ['banners.update', $data->id], 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'put', 'files' => true]) }}
     @endif
     <div class="card">
         <div class="card-body">
@@ -25,34 +25,25 @@
                         @enderror
                     </div>
                     <div class="col-3">
+                        <label class="form-label">Type</label>
+                        {{ Form::select('type', $type, old('type'), ['class' => 'form-select', 'required']) }}
+                        @error('type')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
                         <label class="form-label">Image</label>
                         {{ Form::file('image', ['class' => 'form-control', 'accept' => 'image/*']) }}
                         @error('image')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div>
-                <div class="row mb-3">
                     <div class="col-6">
-                        <label class="form-label"><span class="text-danger">*</span> Name</label>
-                        {{ Form::text('name', old('name'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter name']) }}
-                        @error('name')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <label class="form-label"><span class="text-danger">*</span> Position</label>
-                        {{ Form::text('position', old('position'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter position']) }}
-                        @error('position')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label"><span class="text-danger">*</span> Organization</label>
-                        {{ Form::text('organization', old('organization'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter organization']) }}
-                        @error('organization')
+                        <label class="form-label">Url Youtube</label>
+                        {{ Form::text('url', old('url'), ['class' => 'form-control', 'placeholder' => 'Enter url']) }}
+                        @error('url')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

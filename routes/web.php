@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\UserController;
@@ -30,7 +31,9 @@ Route::get('/users/{id}/resetpassword', [UserController::class, 'resetpassword']
 Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('users.jsontable');
 Route::get('/committees/jsontable', [CommitteeController::class, 'jsontable'])->name('committees.jsontable');
 Route::get('/hotels/jsontable', [HotelController::class, 'jsontable'])->name('hotels.jsontable');
+Route::get('/banners/jsontable', [BannerController::class, 'jsontable'])->name('banners.jsontable');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
 Route::resource('hotels', HotelController::class);
+Route::resource('banners', BannerController::class);
