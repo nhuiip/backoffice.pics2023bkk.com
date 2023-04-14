@@ -67,11 +67,7 @@
                     @include('layouts.components.buttons.reset')
                 </div>
                 <div class="col-6">
-                    @if (Route::Is('users.resetpassword'))
-                        @include('layouts.components.buttons.save', ['value' => 'resetpassword'])
-                    @else
-                        @include('layouts.components.buttons.save', ['value' => 'save'])
-                    @endif
+                    @include('layouts.components.buttons.save', ['value' => 'save'])
                 </div>
             </div>
         </div>
