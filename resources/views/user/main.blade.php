@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" data-url="{{ route('users.jsontable') }}">
+            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('users.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>

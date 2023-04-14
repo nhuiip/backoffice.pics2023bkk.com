@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" data-url="{{ route('banners.jsontable') }}">
+            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('banners.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>

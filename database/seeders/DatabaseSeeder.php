@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@pics2023bkk.com',
-            'password' => bcrypt('pics2023bkk')
+            'password' => 'pics2023bkk'
         ]);
     }
 }

@@ -172,8 +172,8 @@ class CommitteeController extends Controller
 
         $columnorder = array(
             'id',
-            'seq',
             'image_url',
+            'seq',
             'name',
             'position',
             'organization',
@@ -214,7 +214,9 @@ class CommitteeController extends Controller
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
             ->editColumn('image_url', function ($data) {
-                return '<center><img class="rounded-circle w-100" src="' . $data->image_url . '" alt=""></center>';
+
+                // return '<center><img class="rounded-circle" src="' . $data->image_url . '" alt="" style=""></center>';
+                return '<center><div class="imgCommittee" style="background-image: url(' . $data->image_url . ');"></div></center>';
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';

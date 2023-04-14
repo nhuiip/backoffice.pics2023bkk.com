@@ -49,3 +49,16 @@
 .menu-active span {
     color: #6362e7 !important;
 }
+.wh-50px {
+    width: 50px !important;
+    height: 50px !important;
+}
+.imgCommittee  {
+    width: 50px;
+    height: 50px;
+    border-radius: 50% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-image: url('http://147.50.231.19/plesk-site-preview/admin.pics2023bkk.com/https/147.50.231.19/storage/committee/Hq0qEsFFxS7fqZiy5KzlGpeRDyYoHcPY0yvP0ogw.png'); */
+}

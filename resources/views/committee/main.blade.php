@@ -16,12 +16,12 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" data-url="{{ route('committees.jsontable') }}">
+            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('committees.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Seq</th>
                         <th></th>
+                        <th>Seq</th>
                         <th>Name</th>
                         <th>Position</th>
                         <th>Organization</th>
@@ -53,25 +53,27 @@
                     d.role = $('#role').val();
                 },
             },
+            order: [2, 'asc'],
             columnDefs: [{
                     targets: [0],
-                    width: '10%'
+                    width: '10%',
+                    orderable: false
                 },
                 {
                     targets: [1],
-                    width: '5%'
-                },
-                {
-                    targets: [2],
                     width: '5%',
                     orderable: false
                 },
                 {
-                    targets: [3, 4,5],
+                    targets: [2],
+                    width: '10%'
+                },
+                {
+                    targets: [3, 4, 5],
                     orderable: false
                 },
                 {
-                    targets: [6,7],
+                    targets: [6, 7],
                     width: '15%',
                     orderable: false
                 },
@@ -86,10 +88,10 @@
                     data: 'id'
                 },
                 {
-                    data: 'seq'
+                    data: 'image_url'
                 },
                 {
-                    data: 'image_url'
+                    data: 'seq'
                 },
                 {
                     data: 'name'
