@@ -62,7 +62,7 @@
                 },
                 {
                     targets: [4,5],
-                    width: '15%',
+                    width: '10%',
                     orderable: false
                 },
                 {

@@ -60,7 +60,7 @@
                 },
                 {
                     targets: [3, 4],
-                    width: '15%',
+                    width: '10%',
                     orderable: false
                 },
                 {

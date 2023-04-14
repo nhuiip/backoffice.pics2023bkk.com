@@ -32,13 +32,11 @@ class BannerController extends Controller
             ['route' => '', 'name' => 'Create Banner'],
         ];
 
-        $type = array('' => 'Select type', 1 => 'Image', 2 => 'Video');
-
         return view('banner.form', [
             'title' => 'Create Banner',
             'breadcrumbs' => $breadcrumbs,
             'nextSeq' => Banner::count() + 1,
-            'type' => $type
+            'type' => array('' => 'Select type', 1 => 'Image', 2 => 'Video')
         ]);
     }
 
@@ -80,7 +78,7 @@ class BannerController extends Controller
         }
 
 
-        return redirect()->route('banner.index')->with('toast_success', 'Create data succeed!');
+        return redirect()->route('banners.index')->with('toast_success', 'Create data succeed!');
     }
 
     /**
@@ -96,7 +94,16 @@ class BannerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $breadcrumbs = [
+            ['route' => route('banners.index'), 'name' => 'Banner Management'],
+            ['route' => '', 'name' => 'Edit Banner'],
+        ];
+        return view('banner.form', [
+            'title' => 'Edit Banner',
+            'breadcrumbs' => $breadcrumbs,
+            'type' => array('' => 'Select type', 1 => 'Image', 2 => 'Video'),
+            'data' => Banner::findOrFail($id)
+        ]);
     }
 
     /**
@@ -104,7 +111,40 @@ class BannerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $maxSeq = (int)Banner::count() + 1;
+        $this->validate(
+            $request,
+            [
+                'type' => 'required',
+                'seq' => 'required|integer|min:1|max:' . $maxSeq,
+                'image' => 'required_if:type,==,1|mimes:jpeg,jpg,png,webp',
+                'url' => 'required_if:type,==,2',
+            ],
+            [
+                'type.required' => 'Please select type',
+                'seq.required' => 'Please enter seq',
+                'seq.integer' => 'Please enter numbers only.',
+                'seq.min' => 'Please enter at least 1 number.',
+                'seq.max' => 'Please enter no more than ' . $maxSeq,
+                'image.required_if' => 'Please select image.',
+                'image.mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
+                'url.required_if' => 'Please enter url.',
+            ]
+        );
+
+        $data = new Banner($request->all());
+        $data->save();$data = new Banner($request->all());
+        $data->save();
+
+        if ($request->hasfile('image')) {
+            $image_url = $request->file('image')->store('banner', 'public');
+
+            // !update image url
+            $data->url = env('APP_URL') . "/storage/" . $image_url;
+            $data->save();
+        }
+
+        return redirect()->route('banners.index')->with('toast_success', 'Create data succeed!');
     }
 
     /**

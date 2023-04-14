@@ -65,6 +65,7 @@ class CommitteeController extends Controller
                 'seq.integer' => 'Please enter numbers only.',
                 'seq.min' => 'Please enter at least 1 number.',
                 'seq.max' => 'Please enter no more than ' . $maxSeq,
+                'image.mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
             ]
         );
 
@@ -133,6 +134,7 @@ class CommitteeController extends Controller
                 'seq.integer' => 'Please enter numbers only.',
                 'seq.min' => 'Please enter at least 1 number.',
                 'seq.max' => 'Please enter no more than ' . $maxSeq,
+                'image.mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
             ]
         );
 

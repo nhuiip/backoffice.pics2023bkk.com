@@ -34,7 +34,13 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">
-                        <label class="form-label">Image</label>
+                        <label class="form-label">
+                            Image
+                            @if (!empty($data))
+                                <a href="{{ $data->url }}" target="_blank" rel="noopener noreferrer"><i
+                                        class="text-danger"><u>view old image</u></i></a>
+                            @endif
+                        </label>
                         {{ Form::file('image', ['class' => 'form-control', 'accept' => 'image/*']) }}
                         @error('image')
                             <small class="text-danger">{{ $message }}</small>
@@ -42,7 +48,15 @@
                     </div>
                     <div class="col-6">
                         <label class="form-label">Url Youtube</label>
-                        {{ Form::text('url', old('url'), ['class' => 'form-control', 'placeholder' => 'Enter url']) }}
+                        @if (empty($data))
+                            {{ Form::text('url', old('url'), ['class' => 'form-control', 'placeholder' => 'Enter url']) }}
+                        @else
+                            @if ($data->type == 1)
+                                {{ Form::text('url', '', ['class' => 'form-control', 'placeholder' => 'Enter url']) }}
+                            @else
+                                {{ Form::text('url', old('url'), ['class' => 'form-control', 'placeholder' => 'Enter url']) }}
+                            @endif
+                        @endif
                         @error('url')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
