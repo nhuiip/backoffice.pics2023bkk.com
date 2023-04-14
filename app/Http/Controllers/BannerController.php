@@ -73,7 +73,7 @@ class BannerController extends Controller
             $image_url = $request->file('image')->store('banner', 'public');
 
             // !update image url
-            $data->url = env('APP_URL') . "/storage/" . $image_url;
+            $data->url = config('app.url') . "/storage/" . $image_url;
             $data->save();
         }
 
@@ -132,15 +132,15 @@ class BannerController extends Controller
             ]
         );
 
-        $data = new Banner($request->all());
-        $data->save();$data = new Banner($request->all());
+        $data = Banner::findOrFail($id);
+        $data->update($request->all());
         $data->save();
 
         if ($request->hasfile('image')) {
             $image_url = $request->file('image')->store('banner', 'public');
 
             // !update image url
-            $data->url = env('APP_URL') . "/storage/" . $image_url;
+            $data->url = config('app.url') . "/storage/" . $image_url;
             $data->save();
         }
 
@@ -204,13 +204,13 @@ class BannerController extends Controller
                         break;
 
                     default:
-                    $type = 'Image';
+                        $type = 'Image';
                         break;
                 }
                 return $type;
             })
             ->editColumn('url', function ($data) {
-                return '<a href="'.$data->url.'" target="_blank">'.$data->url.'</a>';
+                return '<a href="' . $data->url . '" target="_blank">' . $data->url . '</a>';
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';

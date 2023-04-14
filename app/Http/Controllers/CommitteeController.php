@@ -76,7 +76,7 @@ class CommitteeController extends Controller
             $image_url = $request->file('image')->store('committee', 'public');
 
             // !update image url
-            $data->image_url = env('APP_URL') . "/storage/" . $image_url;
+            $data->image_url = config('app.url') . "/storage/" . $image_url;
             $data->save();
         }
 
@@ -146,7 +146,7 @@ class CommitteeController extends Controller
             $image_url = $request->file('image')->store('committee', 'public');
 
             // !update image url
-            $data->image_url = env('APP_URL') . "/storage/" . $image_url;
+            $data->image_url = config('app.url') . "/storage/" . $image_url;
             $data->save();
         }
 
