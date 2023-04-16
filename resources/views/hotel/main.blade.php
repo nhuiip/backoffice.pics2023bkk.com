@@ -1,5 +1,12 @@
 @extends('layouts.app')
 @section('title', $title)
+@section('style')
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+@endsection
 @section('breadcrumb')
     @include('layouts.components.breadcrumb', ['breadcrumbs' => $breadcrumbs, 'title' => $title])
 @endsection
@@ -20,11 +27,9 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th></th>
+                        <th>Seq</th>
                         <th>Name</th>
                         <th>Ranging</th>
-                        <th>Price (Single)</th>
-                        <th>Price (Double)</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th></th>
@@ -60,24 +65,24 @@
                 {
                     targets: [1],
                     width: '5%',
-                    orderable: false
                 },
                 {
                     targets: [2],
                     orderable: false
                 },
                 {
-                    targets: [3, 4,5],
+                    targets: [3],
+                    width: '10%',
+                    className: 'text-center',
+                    orderable: false
+                },
+                {
+                    targets: [4,5],
                     width: '10%',
                     orderable: false
                 },
                 {
-                    targets: [6, 7],
-                    width: '10%',
-                    orderable: false
-                },
-                {
-                    targets: [8],
+                    targets: [6],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -90,16 +95,10 @@
                     data: 'seq'
                 },
                 {
-                    data: 'image_url'
-                },
-                {
                     data: 'name'
                 },
                 {
-                    data: 'position'
-                },
-                {
-                    data: 'organization'
+                    data: 'ranging'
                 },
                 {
                     data: 'created_at'

@@ -44,7 +44,50 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $maxSeq = (int)Hotel::count() + 1;
+        $this->validate(
+            $request,
+            [
+                'seq' => 'required|integer|min:1|max:' . $maxSeq,
+                'ranging' => 'required|integer|min:1|max:5',
+                'name' => 'required|max:255',
+                'description' => 'max:255',
+                'tel' => 'required|max:100',
+                'email' => 'required|max:100',
+                'address' => 'required|max:255',
+                'roomrate' => 'required|max:255',
+                'google_map' => 'max:255',
+                'remark' => 'max:255',
+            ],
+            [
+                'seq.required' => 'Please enter seq.',
+                'seq.integer' => 'Please enter numbers only.',
+                'seq.min' => 'Please enter at least 1 number.',
+                'seq.max' => 'Please enter no more than ' . $maxSeq,
+                'ranging.required' => 'Please enter ranging',
+                'ranging.integer' => 'Please enter numbers only.',
+                'ranging.min' => 'Please enter at least 1 number.',
+                'ranging.max' => 'Please enter no more than 5',
+                'name.required' => 'Please enter name',
+                'name.max' => 'Name cannot be longer than 255 characters.',
+                'description.max' => 'Description cannot be longer than 255 characters.',
+                'tel.required' => 'Please enter tel.',
+                'tel.max' => 'Tel cannot be longer than 100 characters.',
+                'email.required' => 'Please enter email.',
+                'email.max' => 'Email cannot be longer than 100 characters.',
+                'address.required' => 'Please enter address.',
+                'address.max' => 'Adderss cannot be longer than 255 characters.',
+                'roomrate.required' => 'Please enter roomrate.',
+                'roomrate.max' => 'Room rate cannot be longer than 255 characters.',
+                'google_map.max' => 'Google map cannot be longer than 255 characters.',
+                'remark.max' => 'Remark cannot be longer than 255 characters.',
+            ]
+        );
+
+        $data = new Hotel($request->all());
+        $data->save();
+
+        return redirect()->route('hotels.index')->with('toast_success', 'Create data succeed!');
     }
 
     /**
@@ -60,7 +103,15 @@ class HotelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $breadcrumbs = [
+            ['route' => route('hotels.index'), 'name' => 'Hotel Management'],
+            ['route' => '', 'name' => 'Edit Hotel'],
+        ];
+        return view('hotel.form', [
+            'title' => 'Edit Hotel',
+            'breadcrumbs' => $breadcrumbs,
+            'data' => Hotel::findOrFail($id)
+        ]);
     }
 
     /**
@@ -68,7 +119,51 @@ class HotelController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $maxSeq = (int)Hotel::count() + 1;
+        $this->validate(
+            $request,
+            [
+                'seq' => 'required|integer|min:1|max:' . $maxSeq,
+                'ranging' => 'required|integer|min:1|max:5',
+                'name' => 'required|max:255',
+                'description' => 'max:255',
+                'tel' => 'required|max:100',
+                'email' => 'required|max:100',
+                'address' => 'required|max:255',
+                'roomrate' => 'required|max:255',
+                'google_map' => 'max:255',
+                'remark' => 'max:255',
+            ],
+            [
+                'seq.required' => 'Please enter seq.',
+                'seq.integer' => 'Please enter numbers only.',
+                'seq.min' => 'Please enter at least 1 number.',
+                'seq.max' => 'Please enter no more than ' . $maxSeq,
+                'ranging.required' => 'Please enter ranging',
+                'ranging.integer' => 'Please enter numbers only.',
+                'ranging.min' => 'Please enter at least 1 number.',
+                'ranging.max' => 'Please enter no more than 5',
+                'name.required' => 'Please enter name',
+                'name.max' => 'Name cannot be longer than 255 characters.',
+                'description.max' => 'Description cannot be longer than 255 characters.',
+                'tel.required' => 'Please enter tel.',
+                'tel.max' => 'Tel cannot be longer than 100 characters.',
+                'email.required' => 'Please enter email.',
+                'email.max' => 'Email cannot be longer than 100 characters.',
+                'address.required' => 'Please enter address.',
+                'address.max' => 'Adderss cannot be longer than 255 characters.',
+                'roomrate.required' => 'Please enter roomrate.',
+                'roomrate.max' => 'Room rate cannot be longer than 255 characters.',
+                'google_map.max' => 'Google map cannot be longer than 255 characters.',
+                'remark.max' => 'Remark cannot be longer than 255 characters.',
+            ]
+        );
+
+        $data = Hotel::findOrFail($id);
+        $data->update($request->all());
+        $data->save();
+
+        return redirect()->route('hotels.index')->with('toast_success', 'Update data succeed!');
     }
 
     /**
@@ -93,10 +188,8 @@ class HotelController extends Controller
         $columnorder = array(
             'id',
             'seq',
-            'image_url',
             'name',
-            'position',
-            'organization',
+            'ranging',
             'created_at',
             'updated_at',
             'action',
@@ -133,13 +226,14 @@ class HotelController extends Controller
             ->editColumn('id', function ($data) {
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
-            ->editColumn('image_url', function ($data) {
-                $image_url = "";
-                $image = HotelImage::where(['hotelId' => $data->id, 'is_cover' => true])->findOrFail();
-                if ($image != null) {
-                    $image_url = $image->image_url;
+            ->editColumn('ranging', function ($data) {
+                $checked = '<span class="fa fa-star checked"></span>';
+                $uncheck = '<span class="fa fa-star"></span>';
+                $html = '';
+                for($i = 1; $i <= 5; $i++){
+                    $html .= $data->ranging >= $i ? $checked : $uncheck;
                 }
-                return '<center><img class="rounded-circle w-100" src="' . $image_url . '" alt=""></center>';
+                return $html;
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
@@ -149,7 +243,7 @@ class HotelController extends Controller
             })
             ->addColumn('action', function ($data) {
                 $id = $data->id;
-                return view('committee._action', compact('id'));
+                return view('hotel._action', compact('id'));
             })
             ->setTotalRecords($recordsTotal)
             ->setFilteredRecords($recordsFiltered)

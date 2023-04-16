@@ -4,8 +4,8 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('hotels.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Edit</a>
-        </li>
+        <li><a class="dropdown-item" href="{{ route('hotels.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Edit</a></li>
+        <li><a class="dropdown-item" href="{{ route('hotels-image.index', ['hotelId'=> $id]) }}"><i class="fa fa-image"></i>&nbsp; Image</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>

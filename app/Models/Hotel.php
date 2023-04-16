@@ -19,13 +19,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string|null $description
  * @property string|null $content
- * @property string|null $content_journey
  * @property string|null $tel
  * @property string|null $email
  * @property string|null $address
+ * @property string|null $google_map
+ * @property string|null $roomrate
+ * @property string|null $remark
  * @property int|null $ranging
- * @property float|null $priceSingle
- * @property float|null $priceDouble
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -41,9 +41,7 @@ class Hotel extends Model
 
 	protected $casts = [
 		'seq' => 'int',
-		'ranging' => 'int',
-		'priceSingle' => 'float',
-		'priceDouble' => 'float'
+		'ranging' => 'int'
 	];
 
 	protected $fillable = [
@@ -51,13 +49,13 @@ class Hotel extends Model
 		'name',
 		'description',
 		'content',
-		'content_journey',
 		'tel',
 		'email',
 		'address',
-		'ranging',
-		'priceSingle',
-		'priceDouble'
+		'google_map',
+		'roomrate',
+		'remark',
+		'ranging'
 	];
 
 	public function hotel_images()
