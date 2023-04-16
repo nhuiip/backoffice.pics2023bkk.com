@@ -123,6 +123,11 @@ class NewsController extends Controller
         $data->update($request->all());
         $data->save();
 
+        if ($request->is_announcement == null) {
+            $data->is_announcement = false;
+            $data->save();
+        }
+
         if ($request->hasfile('image')) {
             $image_url = $request->file('image')->store('news', 'public');
 
