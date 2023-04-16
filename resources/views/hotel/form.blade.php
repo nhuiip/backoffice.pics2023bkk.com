@@ -94,8 +94,8 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label class="form-label"><span class="text-danger">*</span> Remark</label>
-                    {{ Form::text('description', old('podescriptionsition'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter description']) }}
-                    @error('description')
+                    {{ Form::text('remark', old('remark'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter remark']) }}
+                    @error('remark')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>

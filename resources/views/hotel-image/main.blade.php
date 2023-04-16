@@ -30,6 +30,9 @@
     <div class="row my-gallery gallery-with-description" itemscope="" data-pswp-uid="1">
         @foreach ($data as $key => $value)
             <figure class="col-xl-3 col-sm-6 xl-33" itemprop="associatedMedia" itemscope="">
+                @if($value->is_cover)
+                <span class="badge badge-success" style="position: absolute;font-size:1rem"><i class="fa fa-check"></i> Cover</span>
+                @endif
                 <a href="javascript:;" itemprop="contentUrl" data-size="1600x950">
                     <img src="{{ $value->image_url }}" class="bg-white" itemprop="thumbnail" alt="Image description">
                     <div class="caption bg-white">
