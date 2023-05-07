@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
+use App\Models\Program;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class NewsController extends Controller
+class ProgramController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // echo phpinfo();
-        // die;
         $breadcrumbs = [
-            ['route' => '', 'name' => 'News Management'],
+            ['route' => '', 'name' => 'Program Management'],
         ];
-        return view('news.main', [
-            'title' => 'News Management',
+        return view('program.main', [
+            'title' => 'Program Management',
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
@@ -30,11 +28,11 @@ class NewsController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ['route' => route('news.index'), 'name' => 'News Management'],
+            ['route' => route('programs.index'), 'name' => 'Program Management'],
             ['route' => '', 'name' => 'Create News'],
         ];
-        return view('news.form', [
-            'title' => 'Create News',
+        return view('program.form', [
+            'title' => 'Create Program',
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
@@ -48,31 +46,26 @@ class NewsController extends Controller
             $request,
             [
                 'name' => 'required|max:255',
-                'content' => 'required',
-                'image' => 'required|mimes:jpeg,jpg,png,webp',
+                'room' => 'required|max:255',
+                'date' => 'required',
+                'startTime' => 'required',
+                'endTime' => 'required',
             ],
             [
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.',
-                'content.required' => 'Please enter content',
-                'image.required' => 'Please select name.',
-                'image.mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
+                'room.required' => 'Please enter room',
+                'room.max' => 'Room cannot be longer than 255 characters.',
+                'date.required' => 'Please enter date',
+                'startTime.required' => 'Please enter start time',
+                'endTime.required' => 'Please enter end time',
             ]
         );
 
-        $data = new News($request->all());
+        $data = new Program($request->all());
         $data->save();
 
-        if ($request->hasfile('image')) {
-            $image_url = $request->file('image')->store('news', 'public');
-
-            // !update image url
-            $data->image_url = config('app.url') . "/storage/" . $image_url;
-            $data->save();
-        }
-
-
-        return redirect()->route('news.index')->with('toast_success', 'Create data succeed!');
+        return redirect()->route('programs.index')->with('toast_success', 'Create data succeed!');
     }
 
     /**
@@ -89,13 +82,13 @@ class NewsController extends Controller
     public function edit(string $id)
     {
         $breadcrumbs = [
-            ['route' => route('news.index'), 'name' => 'News Management'],
+            ['route' => route('programs.index'), 'name' => 'Program Management'],
             ['route' => '', 'name' => 'Edit News'],
         ];
-        return view('news.form', [
-            'title' => 'Edit News',
+        return view('program.form', [
+            'title' => 'Edit Program',
             'breadcrumbs' => $breadcrumbs,
-            'data' => News::findOrFail($id)
+            'data' => Program::findOrFail($id)
         ]);
     }
 
@@ -108,35 +101,32 @@ class NewsController extends Controller
             $request,
             [
                 'name' => 'required|max:255',
-                'content' => 'required',
-                'image' => 'mimes:jpeg,jpg,png,webp',
+                'room' => 'required|max:255',
+                'date' => 'required',
+                'startTime' => 'required',
+                'endTime' => 'required',
             ],
             [
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.',
-                'content.required' => 'Please enter content',
-                'image.mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
+                'room.required' => 'Please enter room',
+                'room.max' => 'Room cannot be longer than 255 characters.',
+                'date.required' => 'Please enter date',
+                'startTime.required' => 'Please enter start time',
+                'endTime.required' => 'Please enter end time',
             ]
         );
 
-        $data = News::findOrFail($id);
+        $data = Program::findOrFail($id);
         $data->update($request->all());
         $data->save();
 
-        if ($request->is_announcement == null) {
-            $data->is_announcement = false;
+        if ($request->is_highlight == null) {
+            $data->is_highlight = false;
             $data->save();
         }
 
-        if ($request->hasfile('image')) {
-            $image_url = $request->file('image')->store('news', 'public');
-
-            // !update image url
-            $data->image_url = config('app.url') . "/storage/" . $image_url;
-            $data->save();
-        }
-
-        return redirect()->route('news.index')->with('toast_success', 'Update data succeed!');
+        return redirect()->route('programs.index')->with('toast_success', 'Update data succeed!');
     }
 
     /**
@@ -144,7 +134,7 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = News::findOrFail($id);
+        $data = Program::findOrFail($id);
         $data->delete();
         return back()->with('toast_success', 'Delete data succeed!');
     }
@@ -161,9 +151,9 @@ class NewsController extends Controller
         $columnorder = array(
             'id',
             'name',
-            'is_announcement',
-            'visit',
-            'favorite',
+            'room',
+            'date',
+            'endTime',
             'created_at',
             'updated_at',
             'action',
@@ -179,7 +169,7 @@ class NewsController extends Controller
         // query
         $keyword = trim($search['value']);
 
-        $data = News::when($keyword, function ($query, $keyword) {
+        $data = Program::when($keyword, function ($query, $keyword) {
             return $query->where(function ($query) use ($keyword) {
                 $query->orWhere('name', 'LIKE', '%' . $keyword . '%');
             });
@@ -188,8 +178,8 @@ class NewsController extends Controller
             ->limit($length)
             ->orderBy($sort, $dir)
             ->get();
-        $recordsTotal = News::select('id')->count();
-        $recordsFiltered = News::select('id')
+        $recordsTotal = Program::select('id')->count();
+        $recordsFiltered = Program::select('id')
             ->when($keyword, function ($query, $keyword) {
                 return $query->where(function ($query) use ($keyword) {
                     $query->orWhere('name', 'LIKE', '%' . $keyword . '%');
@@ -200,8 +190,11 @@ class NewsController extends Controller
             ->editColumn('id', function ($data) {
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
-            ->editColumn('is_announcement', function ($data) {
-                return $data->is_announcement ? '<i class="text-success"><u><b>Yes</b></u></i>' : '<i class="text-danger"><u><b>No</b></u></i>';
+            ->editColumn('date', function ($data) {
+                return date('d/m/Y', strtotime($data->date)) . '<br><small><i class="far fa-clock"></i> ' . date('h:i', strtotime($data->startTime)).' - '.date('h:i', strtotime($data->endTime)) . '</small>';
+            })
+            ->editColumn('is_highlight', function ($data) {
+                return $data->is_highlight ? '<i class="text-success"><u><b>Yes</b></u></i>' : '<i class="text-danger"><u><b>No</b></u></i>';
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
@@ -211,7 +204,7 @@ class NewsController extends Controller
             })
             ->addColumn('action', function ($data) {
                 $id = $data->id;
-                return view('news._action', compact('id'));
+                return view('program._action', compact('id'));
             })
             ->setTotalRecords($recordsTotal)
             ->setFilteredRecords($recordsFiltered)
