@@ -8,7 +8,7 @@
         <div class="card-header pb-0">
             <div class="row">
                 <div class="col-10">
-                    @include('layouts.components.buttons.create', ['url' => route('news.create')])
+                    @include('layouts.components.buttons.create', ['url' => route('registrations.create')])
                 </div>
                 <div class="col-2">
                     @include('layouts.components.input-query')
@@ -16,14 +16,11 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('news.jsontable') }}">
+            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('registrations.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Announcement</th>
-                        <th>Visit</th>
-                        <th>Favorite</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th></th>
@@ -55,26 +52,13 @@
                 },
                 {
                     targets: [1],
-                    orderable: false
                 },
                 {
-                    targets: [2],
-                    width: '5%',
-                    className: 'text-end',
-                    orderable: false
-                },
-                {
-                    targets: [3, 4],
-                    className: 'text-end',
-                    width: '5%',
-                },
-                {
-                    targets: [5, 6],
+                    targets: [2, 3],
                     width: '10%',
-                    orderable: false
                 },
                 {
-                    targets: [7],
+                    targets: [4],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -85,15 +69,6 @@
                 },
                 {
                     data: 'name'
-                },
-                {
-                    data: 'is_announcement'
-                },
-                {
-                    data: 'visit'
-                },
-                {
-                    data: 'favorite'
                 },
                 {
                     data: 'created_at'

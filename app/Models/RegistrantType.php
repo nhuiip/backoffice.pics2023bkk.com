@@ -9,34 +9,31 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Pricing
+ * Class RegistrantType
  * 
  * @property int $id
  * @property string $name
- * @property string $image_iimg
+ * @property string $image_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string|null $deleted_at
  * 
- * @property Collection|PricingMapping[] $pricing_mappings
+ * @property Collection|RegistrationFee[] $registration_fees
  *
  * @package App\Models
  */
-class Pricing extends Model
+class RegistrantType extends Model
 {
-	use SoftDeletes;
-	protected $table = 'pricing';
+	protected $table = 'registrant_type';
 
 	protected $fillable = [
 		'name',
-		'image_iimg'
+		'image_url'
 	];
 
-	public function pricing_mappings()
+	public function registration_fees()
 	{
-		return $this->hasMany(PricingMapping::class, 'pricingId');
+		return $this->hasMany(RegistrationFee::class, 'registrantTypeId');
 	}
 }

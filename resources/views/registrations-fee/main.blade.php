@@ -8,7 +8,7 @@
         <div class="card-header pb-0">
             <div class="row">
                 <div class="col-10">
-                    @include('layouts.components.buttons.create', ['url' => route('news.create')])
+                    @include('layouts.components.buttons.create', ['url' => route('registrations-fee.create', ['registrantGroupId' => $registration->id])])
                 </div>
                 <div class="col-2">
                     @include('layouts.components.input-query')
@@ -16,14 +16,15 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('news.jsontable') }}">
+            <input type="hidden" id="registrantGroupId" value="{{ $registration->id }}">
+            <table id="dataTable" class="table-border-vertical table-hover"
+                data-url="{{ route('registrations-fee.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Announcement</th>
-                        <th>Visit</th>
-                        <th>Favorite</th>
+                        <th>Rate</th>
+                        <th>Type</th>
+                        <th>Price (USD)</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th></th>
@@ -48,33 +49,28 @@
             ajax: {
                 url: $('#dataTable').attr('data-url'),
                 type: "GET",
+                data: function(d) {
+                    d.registrantGroupId = $('#registrantGroupId').val();
+                },
             },
             columnDefs: [{
                     targets: [0],
                     width: '10%'
                 },
                 {
-                    targets: [1],
-                    orderable: false
+                    targets: [1, 2],
                 },
                 {
-                    targets: [2],
-                    width: '5%',
-                    className: 'text-end',
-                    orderable: false
-                },
-                {
-                    targets: [3, 4],
-                    className: 'text-end',
-                    width: '5%',
-                },
-                {
-                    targets: [5, 6],
+                    targets: [3],
                     width: '10%',
-                    orderable: false
+                    className: 'text-end',
                 },
                 {
-                    targets: [7],
+                    targets: [4, 5],
+                    width: '10%',
+                },
+                {
+                    targets: [6],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -84,16 +80,13 @@
                     data: 'id'
                 },
                 {
-                    data: 'name'
+                    data: 'registrationRateId'
                 },
                 {
-                    data: 'is_announcement'
+                    data: 'registrantTypeId'
                 },
                 {
-                    data: 'visit'
-                },
-                {
-                    data: 'favorite'
+                    data: 'price'
                 },
                 {
                     data: 'created_at'

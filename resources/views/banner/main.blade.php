@@ -44,9 +44,6 @@
             ajax: {
                 url: $('#dataTable').attr('data-url'),
                 type: "GET",
-                data: function(d) {
-                    d.role = $('#role').val();
-                },
             },
             columnDefs: [{
                     targets: [0],
