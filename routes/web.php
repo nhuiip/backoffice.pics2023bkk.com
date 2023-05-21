@@ -42,7 +42,8 @@ Route::delete('/hotels-image/destroy/{id}', [HotelImageController::class, 'destr
 Route::get('/registrations-fee/index/{registrantGroupId}', [RegistrationFeeController::class, 'index'])->name('registrations-fee.index');
 Route::get('/registrations-fee/create/{registrantGroupId}', [RegistrationFeeController::class, 'create'])->name('registrations-fee.create');
 Route::post('/registrations-fee/store', [RegistrationFeeController::class, 'store'])->name('registrations-fee.store');
-Route::delete('/registrations-fee/update/{id}', [RegistrationFeeController::class, 'update'])->name('registrations-fee.update');
+Route::get('/registrations-fee/{id}/edit', [RegistrationFeeController::class, 'edit'])->name('registrations-fee.edit');
+Route::put('/registrations-fee/update/{id}', [RegistrationFeeController::class, 'update'])->name('registrations-fee.update');
 Route::delete('/registrations-fee/destroy/{id}', [RegistrationFeeController::class, 'destroy'])->name('registrations-fee.destroy');
 // !data-table
 Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('users.jsontable');
