@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RegistrantGroup;
+use App\Models\Association;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class RegistrationController extends Controller
+class AssociationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +15,10 @@ class RegistrationController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ['route' => '', 'name' => 'Registration Management'],
+            ['route' => '', 'name' => 'Association Management'],
         ];
-        return view('registrations.main', [
-            'title' => 'Registration Management', 
+        return view('association.main', [
+            'title' => 'Association Management',
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
@@ -28,12 +29,14 @@ class RegistrationController extends Controller
     public function create()
     {
         $breadcrumbs = [
-            ['route' => route('registrations.index'), 'name' => 'Registration Management'],
-            ['route' => '', 'name' => 'Create Registration'],
+            ['route' => route('associations.index'), 'name' => 'Association Management'],
+            ['route' => '', 'name' => 'Create Association'],
         ];
-        return view('registrations.form', [
-            'title' => 'Create Registration',
+
+        return view('association.form', [
+            'title' => 'Create Association',
             'breadcrumbs' => $breadcrumbs,
+            'countries' => array('' => 'Select country') + Country::select('nicename', 'id')->get()->pluck('nicename', 'id')->toArray()
         ]);
     }
 
@@ -45,18 +48,20 @@ class RegistrationController extends Controller
         $this->validate(
             $request,
             [
+                'countryId' => 'required',
                 'name' => 'required|max:255',
             ],
             [
+                'countryId.required' => 'Please select country',
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.'
             ]
         );
 
-        $data = new RegistrantGroup($request->all());
+        $data = new Association($request->all());
         $data->save();
 
-        return redirect()->route('registrations.index')->with('toast_success', 'Create data succeed!');
+        return redirect()->route('associations.index')->with('toast_success', 'Create data succeed!');
     }
 
     /**
@@ -73,13 +78,14 @@ class RegistrationController extends Controller
     public function edit(string $id)
     {
         $breadcrumbs = [
-            ['route' => route('registrations.index'), 'name' => 'Registration Management'],
-            ['route' => '', 'name' => 'Edit Registration'],
+            ['route' => route('associations.index'), 'name' => 'Association Management'],
+            ['route' => '', 'name' => 'Edit Association'],
         ];
-        return view('registrations.form', [
-            'title' => 'Edit Registration',
+        return view('association.form', [
+            'title' => 'Edit Association',
             'breadcrumbs' => $breadcrumbs,
-            'data' => RegistrantGroup::findOrFail($id)
+            'countries' => array('' => 'Select country') + Country::select('nicename', 'id')->get()->pluck('nicename', 'id')->toArray(),
+            'data' => Association::findOrFail($id)
         ]);
     }
 
@@ -91,19 +97,21 @@ class RegistrationController extends Controller
         $this->validate(
             $request,
             [
+                'countryId' => 'required',
                 'name' => 'required|max:255',
             ],
             [
+                'countryId.required' => 'Please select country',
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.'
             ]
         );
 
-        $data = RegistrantGroup::findOrFail($id);
+        $data = Association::findOrFail($id);
         $data->update($request->all());
         $data->save();
 
-        return redirect()->route('registrations.index')->with('toast_success', 'Update data succeed!');
+        return redirect()->route('associations.index')->with('toast_success', 'Update data succeed!');
     }
 
     /**
@@ -111,7 +119,7 @@ class RegistrationController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = RegistrantGroup::findOrFail($id);
+        $data = Association::findOrFail($id);
         $data->delete();
         return back()->with('toast_success', 'Delete data succeed!');
     }
@@ -127,6 +135,7 @@ class RegistrationController extends Controller
 
         $columnorder = array(
             'id',
+            'countryId',
             'name',
             'created_at',
             'updated_at',
@@ -143,7 +152,7 @@ class RegistrationController extends Controller
         // query
         $keyword = trim($search['value']);
 
-        $data = RegistrantGroup::when($keyword, function ($query, $keyword) {
+        $data = Association::when($keyword, function ($query, $keyword) {
             return $query->where(function ($query) use ($keyword) {
                 $query->orWhere('name', 'LIKE', '%' . $keyword . '%');
             });
@@ -152,8 +161,8 @@ class RegistrationController extends Controller
             ->limit($length)
             ->orderBy($sort, $dir)
             ->get();
-        $recordsTotal = RegistrantGroup::select('id')->count();
-        $recordsFiltered = RegistrantGroup::select('id')
+        $recordsTotal = Association::select('id')->count();
+        $recordsFiltered = Association::select('id')
             ->when($keyword, function ($query, $keyword) {
                 return $query->where(function ($query) use ($keyword) {
                     $query->orWhere('name', 'LIKE', '%' . $keyword . '%');
@@ -164,6 +173,10 @@ class RegistrationController extends Controller
             ->editColumn('id', function ($data) {
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
+            ->editColumn('countryId', function ($data) {
+                $data = Country::findOrFail($data->countryId);
+                return $data->nicename;
+            })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
             })
@@ -172,7 +185,7 @@ class RegistrationController extends Controller
             })
             ->addColumn('action', function ($data) {
                 $id = $data->id;
-                return view('registrations._action', compact('id'));
+                return view('association._action', compact('id'));
             })
             ->setTotalRecords($recordsTotal)
             ->setFilteredRecords($recordsFiltered)

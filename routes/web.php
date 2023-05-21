@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssociationController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\HotelController;
@@ -55,6 +56,7 @@ Route::get('/news/jsontable', [NewsController::class, 'jsontable'])->name('news.
 Route::get('/programs/jsontable', [ProgramController::class, 'jsontable'])->name('programs.jsontable');
 Route::get('/registrations/jsontable', [RegistrationController::class, 'jsontable'])->name('registrations.jsontable');
 Route::get('/registrations-fee/jsontable', [RegistrationFeeController::class, 'jsontable'])->name('registrations-fee.jsontable');
+Route::get('/associations/jsontable', [AssociationController::class, 'jsontable'])->name('associations.jsontable');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
@@ -64,3 +66,4 @@ Route::resource('news', NewsController::class);
 Route::resource('settings', SettingController::class);
 Route::resource('programs', ProgramController::class);
 Route::resource('registrations', RegistrationController::class);
+Route::resource('associations', AssociationController::class);
