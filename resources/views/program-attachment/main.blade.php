@@ -4,11 +4,30 @@
     @include('layouts.components.breadcrumb', ['breadcrumbs' => $breadcrumbs, 'title' => $title])
 @endsection
 @section('content')
+    {{ Form::open(['novalidate', 'route' => 'programs-attachment.store', 'class' => 'form-horizontal', 'id' => 'account-form', 'method' => 'post', 'files' => true]) }}
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <div class="row mb-3">
+                    <div class="col-10">
+                        {{ Form::hidden('programId', $program->id) }}
+                        {{ Form::file('file[]', ['class' => 'form-control', 'multiple']) }}
+                        @error('file[]')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-success w-100" type="submit" value="save">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
     <div class="card">
         <div class="card-header pb-0">
             <div class="row">
                 <div class="col-10">
-                    @include('layouts.components.buttons.create', ['url' => route('associations.create')])
                 </div>
                 <div class="col-2">
                     @include('layouts.components.input-query')
@@ -16,13 +35,13 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="dataTable" class="table-border-vertical table-hover" data-url="{{ route('associations.jsontable') }}">
+            <input type="hidden" id="programId" value="{{ $program->id }}">
+            <table id="dataTable" class="table-border-vertical table-hover"
+                data-url="{{ route('programs-attachment.jsontable') }}">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Type</th>
-                        <th>Country</th>
-                        <th>Name</th>
+                        <th>File</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th></th>
@@ -47,20 +66,23 @@
             ajax: {
                 url: $('#dataTable').attr('data-url'),
                 type: "GET",
+                data: function(d) {
+                    d.programId = $('#programId').val();
+                },
             },
             columnDefs: [{
                     targets: [0],
                     width: '10%'
                 },
                 {
-                    targets: [1,2,3],
+                    targets: [1],
                 },
                 {
-                    targets: [4,5],
+                    targets: [2, 3],
                     width: '10%',
                 },
                 {
-                    targets: [6],
+                    targets: [4],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -68,12 +90,6 @@
             ],
             columns: [{
                     data: 'id'
-                },
-                {
-                    data: 'registrantTypeId'
-                },
-                {
-                    data: 'countryId'
                 },
                 {
                     data: 'name'

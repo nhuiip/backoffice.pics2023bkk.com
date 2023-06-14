@@ -15,12 +15,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 
  * @property int $id
  * @property int $countryId
+ * @property int $registrantTypeId
  * @property string $name
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * 
  * @property Country $country
+ * @property RegistrantType $registrant_type
  *
  * @package App\Models
  */
@@ -30,16 +32,23 @@ class Association extends Model
 	protected $table = 'associations';
 
 	protected $casts = [
-		'countryId' => 'int'
+		'countryId' => 'int',
+		'registrantTypeId' => 'int'
 	];
 
 	protected $fillable = [
 		'countryId',
+		'registrantTypeId',
 		'name'
 	];
 
 	public function country()
 	{
 		return $this->belongsTo(Country::class, 'countryId');
+	}
+
+	public function registrant_type()
+	{
+		return $this->belongsTo(RegistrantType::class, 'registrantTypeId');
 	}
 }

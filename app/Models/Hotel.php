@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $roomrate
  * @property string|null $remark
  * @property int|null $ranging
+ * @property bool $is_official
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -41,7 +42,8 @@ class Hotel extends Model
 
 	protected $casts = [
 		'seq' => 'int',
-		'ranging' => 'int'
+		'ranging' => 'int',
+		'is_official' => 'bool'
 	];
 
 	protected $fillable = [
@@ -55,7 +57,8 @@ class Hotel extends Model
 		'google_map',
 		'roomrate',
 		'remark',
-		'ranging'
+		'ranging',
+		'is_official'
 	];
 
 	public function hotel_images()

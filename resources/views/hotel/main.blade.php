@@ -29,6 +29,7 @@
                         <th>#</th>
                         <th>Seq</th>
                         <th>Name</th>
+                        <th>Official</th>
                         <th>Ranging</th>
                         <th>Created</th>
                         <th>Updated</th>
@@ -74,12 +75,12 @@
                     orderable: false
                 },
                 {
-                    targets: [4,5],
+                    targets: [4,5,6],
                     width: '10%',
                     orderable: false
                 },
                 {
-                    targets: [6],
+                    targets: [7],
                     width: '5%',
                     className: 'text-center',
                     orderable: false
@@ -93,6 +94,9 @@
                 },
                 {
                     data: 'name'
+                },
+                {
+                    data: 'is_official'
                 },
                 {
                     data: 'ranging'

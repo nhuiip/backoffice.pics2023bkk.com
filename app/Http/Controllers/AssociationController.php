@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Association;
 use App\Models\Country;
+use App\Models\RegistrantType;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -36,7 +37,8 @@ class AssociationController extends Controller
         return view('association.form', [
             'title' => 'Create Association',
             'breadcrumbs' => $breadcrumbs,
-            'countries' => array('' => 'Select country') + Country::select('nicename', 'id')->get()->pluck('nicename', 'id')->toArray()
+            'countries' => array('' => 'Select country') + Country::select('nicename', 'id')->get()->pluck('nicename', 'id')->toArray(),
+            'type' => array('' => 'Select type') + RegistrantType::select('name', 'id')->get()->pluck('name', 'id')->toArray()
         ]);
     }
 
@@ -49,10 +51,12 @@ class AssociationController extends Controller
             $request,
             [
                 'countryId' => 'required',
+                'registrantTypeId' => 'required',
                 'name' => 'required|max:255',
             ],
             [
                 'countryId.required' => 'Please select country',
+                'registrantTypeId.required' => 'Please select type',
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.'
             ]
@@ -85,6 +89,7 @@ class AssociationController extends Controller
             'title' => 'Edit Association',
             'breadcrumbs' => $breadcrumbs,
             'countries' => array('' => 'Select country') + Country::select('nicename', 'id')->get()->pluck('nicename', 'id')->toArray(),
+            'type' => array('' => 'Select type') + RegistrantType::select('name', 'id')->get()->pluck('name', 'id')->toArray(),
             'data' => Association::findOrFail($id)
         ]);
     }
@@ -98,10 +103,12 @@ class AssociationController extends Controller
             $request,
             [
                 'countryId' => 'required',
+                'registrantTypeId' => 'required',
                 'name' => 'required|max:255',
             ],
             [
                 'countryId.required' => 'Please select country',
+                'registrantTypeId.required' => 'Please select type',
                 'name.required' => 'Please enter name',
                 'name.max' => 'Name cannot be longer than 255 characters.'
             ]
@@ -135,6 +142,7 @@ class AssociationController extends Controller
 
         $columnorder = array(
             'id',
+            'registrantTypeId',
             'countryId',
             'name',
             'created_at',
@@ -176,6 +184,10 @@ class AssociationController extends Controller
             ->editColumn('countryId', function ($data) {
                 $data = Country::findOrFail($data->countryId);
                 return $data->nicename;
+            })
+            ->editColumn('registrantTypeId', function ($data) {
+                $data = RegistrantType::findOrFail($data->registrantTypeId);
+                return $data->name;
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';

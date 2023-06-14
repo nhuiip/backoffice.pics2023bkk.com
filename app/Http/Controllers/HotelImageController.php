@@ -39,19 +39,8 @@ class HotelImageController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate(
-        //     $request,
-        //     [
-        //         'image[]' => 'required|mimes:jpeg,jpg,png,webp',
-        //     ],
-        //     [
-        //         'image[].required' => 'Please select image',
-        //         'image[].mimes' => 'Only jpeg,jpg,png,webp file type is supported.',
-        //     ]
-        // );
 
         if ($request->hasfile('image')) {
-
             foreach ($request->file('image') as $image) {
                 $data = new HotelImage($request->all());
                 $data->save();

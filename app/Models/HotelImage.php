@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property int $hotelId
- * @property bool $is_cover
+ * @property bool|null $is_cover
  * @property string|null $image_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

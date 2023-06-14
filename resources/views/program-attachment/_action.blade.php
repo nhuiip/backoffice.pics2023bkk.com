@@ -4,10 +4,7 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('programs.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Edit</a>
-        <li><a class="dropdown-item" href="{{ route('programs-attachment.index', ['programId' => $id]) }}"><i
-                    class="fa fa-image"></i>&nbsp; Attachment</a></li>
-        </li>
+        <li><a class="dropdown-item" href="{{ $file_url }}" download target="_blank"><i class="fa fa-down"></i>&nbsp; Download</a>
         <li>
             <hr class="dropdown-divider">
         </li>
@@ -16,7 +13,7 @@
                 Delete</a></li>
     </ul>
 </div>
-<form id="delete-form-{{ $id }}" method="post" action="{{ route('programs.destroy', $id) }}">
+<form id="delete-form-{{ $id }}" method="post" action="{{ route('programs-attachment.destroy', $id) }}">
     @csrf
     @method('DELETE')
 </form>

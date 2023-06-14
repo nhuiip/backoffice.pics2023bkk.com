@@ -7,6 +7,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelImageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\ProgramsAttachmentController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RegistrationFeeController;
 use App\Http\Controllers\SettingController;
@@ -39,6 +40,10 @@ Route::get('/hotels-image/index/{hotelId}', [HotelImageController::class, 'index
 Route::post('/hotels-image/store', [HotelImageController::class, 'store'])->name('hotels-image.store');
 Route::delete('/hotels-image/update/{id}', [HotelImageController::class, 'update'])->name('hotels-image.update');
 Route::delete('/hotels-image/destroy/{id}', [HotelImageController::class, 'destroy'])->name('hotels-image.destroy');
+// ** programs-attachment
+Route::get('/programs-attachment/index/{programId}', [ProgramsAttachmentController::class, 'index'])->name('programs-attachment.index');
+Route::post('/programs-attachment/store', [ProgramsAttachmentController::class, 'store'])->name('programs-attachment.store');
+Route::delete('/programs-attachment/destroy/{id}', [ProgramsAttachmentController::class, 'destroy'])->name('programs-attachment.destroy');
 // ** registrations-fee
 Route::get('/registrations-fee/index/{registrantGroupId}', [RegistrationFeeController::class, 'index'])->name('registrations-fee.index');
 Route::get('/registrations-fee/create/{registrantGroupId}', [RegistrationFeeController::class, 'create'])->name('registrations-fee.create');
@@ -54,6 +59,7 @@ Route::get('/hotels-image/jsontable', [HotelImageController::class, 'jsontable']
 Route::get('/banners/jsontable', [BannerController::class, 'jsontable'])->name('banners.jsontable');
 Route::get('/news/jsontable', [NewsController::class, 'jsontable'])->name('news.jsontable');
 Route::get('/programs/jsontable', [ProgramController::class, 'jsontable'])->name('programs.jsontable');
+Route::get('/programs-attachment/jsontable', [ProgramsAttachmentController::class, 'jsontable'])->name('programs-attachment.jsontable');
 Route::get('/registrations/jsontable', [RegistrationController::class, 'jsontable'])->name('registrations.jsontable');
 Route::get('/registrations-fee/jsontable', [RegistrationFeeController::class, 'jsontable'])->name('registrations-fee.jsontable');
 Route::get('/associations/jsontable', [AssociationController::class, 'jsontable'])->name('associations.jsontable');

@@ -23,6 +23,13 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+                    <div class="col-6">
+                        <label class="form-label"><span class="text-danger">*</span> Registrant type</label>
+                        {{ Form::select('registrantTypeId', $type, old('registrantTypeId'), ['class' => 'form-select', 'required']) }}
+                        @error('registrantTypeId')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">

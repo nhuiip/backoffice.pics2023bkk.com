@@ -15,6 +15,14 @@
                 <p class="sub-title">Information</p>
             </div>
             <div class="row mb-3">
+                <div class="col-12">
+                    <div class="form-check form-check-inline checkbox checkbox-dark mb-0">
+                        {{ Form::checkbox('is_official', true, null, ['class' => 'form-check-input', 'id' => 'inline-1']) }}
+                        <label class="form-check-label" for="inline-1">Check for Official</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-3">
                     <label class="form-label"><span class="text-danger">*</span> Seq</label>
                     @if (empty($data))

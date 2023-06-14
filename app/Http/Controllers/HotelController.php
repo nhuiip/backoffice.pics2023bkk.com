@@ -163,6 +163,11 @@ class HotelController extends Controller
         $data->update($request->all());
         $data->save();
 
+        if ($request->is_official == null) {
+            $data->is_official = false;
+            $data->save();
+        }
+
         return redirect()->route('hotels.index')->with('toast_success', 'Update data succeed!');
     }
 
@@ -189,6 +194,7 @@ class HotelController extends Controller
             'id',
             'seq',
             'name',
+            'is_official',
             'ranging',
             'created_at',
             'updated_at',
@@ -234,6 +240,9 @@ class HotelController extends Controller
                     $html .= $data->ranging >= $i ? $checked : $uncheck;
                 }
                 return $html;
+            })
+            ->editColumn('is_official', function ($data) {
+                return $data->is_official ? '<i class="text-success"><u><b>Yes</b></u></i>' : '<i class="text-danger"><u><b>No</b></u></i>';
             })
             ->editColumn('created_at', function ($data) {
                 return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';

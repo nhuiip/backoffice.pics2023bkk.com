@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Collection|Association[] $associations
  * @property Collection|RegistrationFee[] $registration_fees
  *
  * @package App\Models
@@ -31,6 +32,11 @@ class RegistrantType extends Model
 		'name',
 		'image_url'
 	];
+
+	public function associations()
+	{
+		return $this->hasMany(Association::class, 'registrantTypeId');
+	}
 
 	public function registration_fees()
 	{
