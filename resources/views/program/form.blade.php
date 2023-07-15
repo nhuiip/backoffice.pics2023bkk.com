@@ -90,6 +90,15 @@
                         @enderror
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label"><span class="text-danger">*</span> Content</label>
+                        {!! Form::textarea('content', null, ['id' => 'content', 'cols' => '10', 'rows' => '2']) !!}
+                        @error('content')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer">
@@ -110,7 +119,6 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/time-picker/jquery-clockpicker.min.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script> --}}
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <script>
         $('.clockpicker').clockpicker();
@@ -119,4 +127,7 @@
             uiLibrary: 'bootstrap5'
         });
     </script>
+    <script src="{{ asset('js/editor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('js/editor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="{{ asset('js/email-app.js') }}"></script>
 @endsection

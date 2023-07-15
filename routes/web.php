@@ -5,6 +5,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelImageController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProgramsAttachmentController;
@@ -51,6 +52,8 @@ Route::post('/registrations-fee/store', [RegistrationFeeController::class, 'stor
 Route::get('/registrations-fee/{id}/edit', [RegistrationFeeController::class, 'edit'])->name('registrations-fee.edit');
 Route::put('/registrations-fee/update/{id}', [RegistrationFeeController::class, 'update'])->name('registrations-fee.update');
 Route::delete('/registrations-fee/destroy/{id}', [RegistrationFeeController::class, 'destroy'])->name('registrations-fee.destroy');
+// ** members
+Route::post('/members/sendemail', [MemberController::class, 'sendemail'])->name('members.sendemail');
 // !data-table
 Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('users.jsontable');
 Route::get('/committees/jsontable', [CommitteeController::class, 'jsontable'])->name('committees.jsontable');
@@ -63,6 +66,7 @@ Route::get('/programs-attachment/jsontable', [ProgramsAttachmentController::clas
 Route::get('/registrations/jsontable', [RegistrationController::class, 'jsontable'])->name('registrations.jsontable');
 Route::get('/registrations-fee/jsontable', [RegistrationFeeController::class, 'jsontable'])->name('registrations-fee.jsontable');
 Route::get('/associations/jsontable', [AssociationController::class, 'jsontable'])->name('associations.jsontable');
+Route::get('/members/jsontable', [MemberController::class, 'jsontable'])->name('members.jsontable');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
@@ -73,3 +77,4 @@ Route::resource('settings', SettingController::class);
 Route::resource('programs', ProgramController::class);
 Route::resource('registrations', RegistrationController::class);
 Route::resource('associations', AssociationController::class);
+Route::resource('members', MemberController::class);
