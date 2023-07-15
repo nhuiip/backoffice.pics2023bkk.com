@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $total
  * @property int $payment_method
  * @property int $payment_status
+ * @property string|null $receipt
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -92,7 +93,8 @@ class Member extends Model
 		'isConsentCondition',
 		'total',
 		'payment_method',
-		'payment_status'
+		'payment_status',
+		'receipt'
 	];
 
 	public function payment_transactions()

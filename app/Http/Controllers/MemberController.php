@@ -6,6 +6,7 @@ use App\Mail\InfoMail;
 use App\Mail\RemindMail;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Mail;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,10 +18,10 @@ class MemberController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ['route' => '', 'name' => 'Member Management'],
+            ['route' => '', 'name' => 'Registrant Management'],
         ];
         return view('member.main', [
-            'title' => 'Member Management',
+            'title' => 'Registrant Management',
             'breadcrumbs' => $breadcrumbs,
             'countries' => Member::select('country')->distinct()->get(),
             'registrant_groups' => Member::select('registrant_group')->distinct()->get(),
@@ -57,7 +58,15 @@ class MemberController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $breadcrumbs = [
+            ['route' => route('members.index'), 'name' => 'Registrant Management'],
+            ['route' => '', 'name' => 'Edit Registrant'],
+        ];
+        return view('member.form', [
+            'title' => 'Edit News',
+            'breadcrumbs' => $breadcrumbs,
+            'data' => Member::findOrFail($id)
+        ]);
     }
 
     /**
@@ -65,6 +74,30 @@ class MemberController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if ($request->action == 'upload_receipt') {
+            $this->validate(
+                $request,
+                [
+                    'receipt' => 'required|mimes:jpeg,jpg,png,webp,pdf',
+                ],
+                [
+                    'receipt.required' => 'Please select receipt.',
+                    'receipt.mimes' => 'Only jpeg,jpg,png,webp, pdf file type is supported.',
+                ]
+            );
+
+            if ($request->hasfile('receipt')) {
+                $filename = $request->file('receipt')->getClientOriginalName();
+                $file_url = config('app.url') . "/receipt/" . $filename;
+                Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
+
+                $data = Member::findOrFail($id);
+                $data->receipt = $file_url;
+                $data->save();
+            }
+
+            return redirect()->route('members.index')->with('toast_success', 'Upload receipt succeed!');
+        }
         $data = Member::findOrFail($id);
         $data->update($request->all());
         $data->save();

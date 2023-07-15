@@ -4,6 +4,7 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ route('members.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Upload Receipt</a>
         @if ($payment_method != 1 && $payment_status != 2)
             <li>
                 <a class="dropdown-item" href="javascript:;" data-text="Check Paid!"
@@ -24,7 +25,7 @@
         <li><a class="dropdown-item" href="javascript:;" data-text="Send Email!"
                 data-url="{{ route('members.sendemail') }}" data-id="{{ $id }}" data-type="user"
                 onclick="fncSendEmail(this)"><i class="fa fa-user"></i>&nbsp;
-                Send Passward</a></li>
+                Send Password</a></li>
         <li><a class="dropdown-item" href="javascript:;" data-text="Send Email!"
                 data-url="{{ route('members.sendemail') }}" data-id="{{ $id }}" data-type="remind"
                 onclick="fncSendEmail(this)"><i class="fa fa-bell"></i>&nbsp;
