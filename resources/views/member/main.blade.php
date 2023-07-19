@@ -4,6 +4,7 @@
     @include('layouts.components.breadcrumb', ['breadcrumbs' => $breadcrumbs, 'title' => $title])
 @endsection
 @section('content')
+    <a href="{{ route('members.export') }}" class="btn btn-outline-primary mb-3"><i class="fa fa-file-excel-o"></i> Export Data</a>
     <div class="card">
         <div class="card-header pb-0">
             <div class="row justify-content-end">

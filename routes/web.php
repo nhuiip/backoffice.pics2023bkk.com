@@ -54,6 +54,7 @@ Route::put('/registrations-fee/update/{id}', [RegistrationFeeController::class, 
 Route::delete('/registrations-fee/destroy/{id}', [RegistrationFeeController::class, 'destroy'])->name('registrations-fee.destroy');
 // ** members
 Route::post('/members/sendemail', [MemberController::class, 'sendemail'])->name('members.sendemail');
+Route::get('/members/export', [MemberController::class, 'export'])->name('members.export');
 // !data-table
 Route::get('/users/jsontable', [UserController::class, 'jsontable'])->name('users.jsontable');
 Route::get('/committees/jsontable', [CommitteeController::class, 'jsontable'])->name('committees.jsontable');

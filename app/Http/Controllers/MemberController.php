@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MemberExport;
 use App\Mail\InfoMail;
+use App\Mail\PaymentMail;
 use App\Mail\RemindMail;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Mail;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -88,7 +91,7 @@ class MemberController extends Controller
 
             if ($request->hasfile('receipt')) {
                 $filename = $request->file('receipt')->getClientOriginalName();
-                $file_url = config('app.url') . "/receipt/" . $filename;
+                $file_url = env('APP_URL') . "/receipt/" . $filename;
                 Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
 
                 $data = Member::findOrFail($id);
@@ -101,6 +104,11 @@ class MemberController extends Controller
         $data = Member::findOrFail($id);
         $data->update($request->all());
         $data->save();
+
+        if(isset($request->payment_status) && $request->payment_status == 2){
+            // send email
+            Mail::to($data->email)->send(new PaymentMail($data));
+        }
 
         return true;
     }
@@ -129,6 +137,10 @@ class MemberController extends Controller
         }
 
         return true;
+    }
+
+    public function export(){
+        return Excel::download(new MemberExport, 'registrant.xlsx');
     }
 
     public function jsontable(Request $request)

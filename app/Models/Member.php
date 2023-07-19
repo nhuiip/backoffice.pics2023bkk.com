@@ -46,6 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Collection|MembersVisa[] $members_visas
  * @property Collection|PaymentTransaction[] $payment_transactions
  *
  * @package App\Models
@@ -96,6 +97,11 @@ class Member extends Model
 		'payment_status',
 		'receipt'
 	];
+
+	public function members_visas()
+	{
+		return $this->hasMany(MembersVisa::class, 'memberId');
+	}
 
 	public function payment_transactions()
 	{
