@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>#</th>
+            <th>Transaction Id</th>
             <th>Reference</th>
             <th>Email</th>
             <th>Email Secondary</th>
@@ -42,6 +43,7 @@
         @foreach ($data as $key => $item)
             <tr>
                 <td>{{ $key + 1 }}</td>
+                <td>{{ $item->transaction_id }}</td>
                 <td>{{ $item->reference }}</td>
                 <td>{{ $item->email }}</td>
                 <td>{{ $item->email_secondary }}</td>

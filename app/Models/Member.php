@@ -40,8 +40,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $isConsentPdpa
  * @property bool $isConsentCondition
  * @property string $total
- * @property int $payment_method
+ * @property int|null $payment_method
  * @property int $payment_status
+ * @property string|null $transaction_id
  * @property string|null $receipt
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -95,6 +96,7 @@ class Member extends Model
 		'total',
 		'payment_method',
 		'payment_status',
+		'transaction_id',
 		'receipt'
 	];
 

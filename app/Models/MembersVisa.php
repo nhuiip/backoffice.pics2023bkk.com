@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $gender
  * @property string|null $identification_number
  * @property string|null $passport_number
- * @property string|null $passport_expiry_date
- * @property string|null $passport_issue_date
- * @property string|null $date_of_birth
+ * @property Carbon|null $passport_expiry_date
+ * @property Carbon|null $passport_issue_date
+ * @property Carbon|null $date_of_birth
  * @property string|null $place_of_birth
  * @property Carbon|null $start_date
  * @property Carbon|null $end_date
@@ -37,6 +37,9 @@ class MembersVisa extends Model
 
 	protected $casts = [
 		'memberId' => 'int',
+		'passport_expiry_date' => 'datetime',
+		'passport_issue_date' => 'datetime',
+		'date_of_birth' => 'datetime',
 		'start_date' => 'datetime',
 		'end_date' => 'datetime'
 	];
