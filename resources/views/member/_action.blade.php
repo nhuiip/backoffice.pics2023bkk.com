@@ -4,15 +4,19 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('members.edit', $id) }}"><i class="fa fa-pencil"></i>&nbsp; Upload Receipt</a>
-        @if ($payment_method != 1 && $payment_status != 2)
-            <li>
-                <a class="dropdown-item" href="javascript:;" data-text="Check Paid!"
-                    data-url="{{ route('members.update', $id) }}" data-status="2" onclick="fncStatus(this)"><i
-                        class="fa fa-check"></i>&nbsp; Check
-                    Paid
-                </a>
-            </li>
+        <li><a class="dropdown-item" href="{{ route('members.edit', ['id' => $id, 'formType' => 'data']) }}"><i class="fa fa-pencil"></i>&nbsp;
+                Edit
+                Data</a>
+        <li><a class="dropdown-item" href="{{ route('members.edit', ['id' => $id, 'formType' => 'upload']) }}"><i class="fa fa-upload"></i>&nbsp; Upload
+                Receipt</a>
+            @if ($payment_method != 1 && $payment_status != 2)
+        <li>
+            <a class="dropdown-item" href="javascript:;" data-text="Check Paid!"
+                data-url="{{ route('members.update', $id) }}" data-status="2" onclick="fncStatus(this)"><i
+                    class="fa fa-check"></i>&nbsp; Check
+                Paid
+            </a>
+        </li>
         @endif
         @if ($payment_method != 1 && $payment_status != 1)
             <li><a class="dropdown-item" href="javascript:;" data-text="Check Paid!"

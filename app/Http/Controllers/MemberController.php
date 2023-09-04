@@ -6,7 +6,10 @@ use App\Exports\MemberExport;
 use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Mail\RemindMail;
+use App\Models\Association;
+use App\Models\Country;
 use App\Models\Member;
+use App\Models\RegistrantType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -59,16 +62,37 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, string $formType)
     {
         $breadcrumbs = [
             ['route' => route('members.index'), 'name' => 'Registrant Management'],
             ['route' => '', 'name' => 'Edit Registrant'],
         ];
+
+        $data = Member::findOrFail($id);
+        $registrationType = RegistrantType::where('name', $data->registration_type)->first();
+        $registrantTypeId = $registrationType->id;
+
+        $countries = null;
+        $countAssociations = Association::where('registrantTypeId', $registrantTypeId)->count();
+
+        if ($countAssociations == 0) {
+            $countries = Country::all();
+        } else {
+            $countries = Country::whereHas('associations', function ($query) use ($registrantTypeId) {
+                $query->where('registrantTypeId', $registrantTypeId);
+            })->get();
+        }
+
         return view('member.form', [
-            'title' => 'Edit News',
+            'title' => 'Edit Registrant',
             'breadcrumbs' => $breadcrumbs,
-            'data' => Member::findOrFail($id)
+            'formType' => $formType,
+            'registrantTypeId' => $registrantTypeId,
+            'countries' => array('' => 'Select data') + $countries->pluck('nicename', 'nicename')->toArray(),
+            'hasAssociation' => $countAssociations > 0 ? true : false,
+            'associations' => Association::select('name')->where('name', $data->organization)->count() != 0 ? Association::select('name')->where('name', $data->organization)->get()->pluck('name', 'name')->toArray() : null,
+            'data' => $data,
         ]);
     }
 
@@ -77,40 +101,72 @@ class MemberController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if ($request->action == 'upload_receipt') {
+        if ($request->formType == 'upload') {
+            if ($request->action == 'upload_receipt') {
+                $this->validate(
+                    $request,
+                    [
+                        'receipt' => 'required|mimes:jpeg,jpg,png,webp,pdf',
+                    ],
+                    [
+                        'receipt.required' => 'Please select receipt.',
+                        'receipt.mimes' => 'Only jpeg,jpg,png,webp, pdf file type is supported.',
+                    ]
+                );
+
+                if ($request->hasfile('receipt')) {
+                    $filename = $request->file('receipt')->getClientOriginalName();
+                    $file_url = env('APP_URL') . "/receipt/" . $filename;
+                    Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
+
+                    $data = Member::findOrFail($id);
+                    $data->receipt = $file_url;
+                    $data->save();
+                }
+
+                return redirect()->route('members.index')->with('toast_success', 'Upload receipt succeed!');
+            }
+            $data = Member::findOrFail($id);
+            $data->update($request->all());
+            $data->save();
+
+            if (isset($request->payment_status) && $request->payment_status == 2) {
+                // send email
+                Mail::to($data->email)->send(new PaymentMail($data));
+            }
+
+            return true;
+        } else {
             $this->validate(
                 $request,
                 [
-                    'receipt' => 'required|mimes:jpeg,jpg,png,webp,pdf',
-                ],
-                [
-                    'receipt.required' => 'Please select receipt.',
-                    'receipt.mimes' => 'Only jpeg,jpg,png,webp, pdf file type is supported.',
+                    'email' => 'required|email|max:255|unique:members,email,' . $id,
+                    'email_secondary' => 'required|email|max:255',
+                    'title' => 'required|max:255',
+                    'first_name' => 'required|max:255',
+                    'last_name' => 'required|max:255',
+                    'address' => 'required|max:255',
+                    'address_2' => 'max:255',
+                    'city' => 'required|max:255',
+                    'city_code' => 'required|max:255',
+                    'country' => 'required',
+                    'phone' => 'required|max:255',
+                    'phone_mobile' => 'required|max:255',
+                    'organization' => 'required|max:255',
+                    'profession_title' => 'required|max:255',
+                    'tax_id' => 'required|max:255',
+                    'tax_phone' => 'required|max:255',
+                    'dietary_restrictions' => 'max:255',
+                    'special_requirements' => 'max:255',
                 ]
             );
 
-            if ($request->hasfile('receipt')) {
-                $filename = $request->file('receipt')->getClientOriginalName();
-                $file_url = env('APP_URL') . "/receipt/" . $filename;
-                Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
+            $data = Member::findOrFail($id);
+            $data->update($request->all());
+            $data->save();
 
-                $data = Member::findOrFail($id);
-                $data->receipt = $file_url;
-                $data->save();
-            }
-
-            return redirect()->route('members.index')->with('toast_success', 'Upload receipt succeed!');
+            return redirect()->route('members.index')->with('toast_success', 'Update data succeed!');
         }
-        $data = Member::findOrFail($id);
-        $data->update($request->all());
-        $data->save();
-
-        if(isset($request->payment_status) && $request->payment_status == 2){
-            // send email
-            Mail::to($data->email)->send(new PaymentMail($data));
-        }
-
-        return true;
     }
 
     /**
@@ -139,7 +195,8 @@ class MemberController extends Controller
         return true;
     }
 
-    public function export(){
+    public function export()
+    {
         return Excel::download(new MemberExport, 'registrant.xlsx');
     }
 
@@ -354,5 +411,15 @@ class MemberController extends Controller
             ->addIndexColumn()
             ->make(true);
         return $resp;
+    }
+
+    public function getassociations(Request $request)
+    {
+        $country = $request->country;
+        $registrantTypeId = $request->registrantTypeId;
+
+        $countryId = Country::where('nicename', $country)->first()->id;
+        $data = Association::where(['countryId' => $countryId, 'registrantTypeId' => $registrantTypeId])->get();
+        return $data;
     }
 }

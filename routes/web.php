@@ -68,6 +68,8 @@ Route::get('/registrations/jsontable', [RegistrationController::class, 'jsontabl
 Route::get('/registrations-fee/jsontable', [RegistrationFeeController::class, 'jsontable'])->name('registrations-fee.jsontable');
 Route::get('/associations/jsontable', [AssociationController::class, 'jsontable'])->name('associations.jsontable');
 Route::get('/members/jsontable', [MemberController::class, 'jsontable'])->name('members.jsontable');
+Route::get('/members/{id}/{formType}/edit', [MemberController::class, 'edit'])->name('members.edit');
+Route::post('/members/getassociations', [MemberController::class, 'getassociations'])->name('members.getassociations');
 // !resource
 Route::resource('users', UserController::class);
 Route::resource('committees', CommitteeController::class);
@@ -78,4 +80,4 @@ Route::resource('settings', SettingController::class);
 Route::resource('programs', ProgramController::class);
 Route::resource('registrations', RegistrationController::class);
 Route::resource('associations', AssociationController::class);
-Route::resource('members', MemberController::class);
+Route::resource('members', MemberController::class, ['except' => ['edit']]);
