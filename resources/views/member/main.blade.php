@@ -17,12 +17,12 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="registrant_group" id="registrant_group" class="form-control select2"
+                    <select name="registration_type" id="registration_type" class="form-control select2"
                         onchange="loadDataTable(this)">
-                        <option value="">Registrant Group</option>
-                        @foreach ($registrant_groups as $registrant_group)
-                            <option value="{{ $registrant_group->registrant_group }}">
-                                {{ $registrant_group->registrant_group }}</option>
+                        <option value="">Registrant Type</option>
+                        @foreach ($registration_types as $registration_type)
+                            <option value="{{ $registration_type->registration_type }}">
+                                {{ $registration_type->registration_type }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -194,7 +194,7 @@
                         url: url,
                         type: "PUT",
                         data: {
-                            // _token: "{{ csrf_token() }}",
+                            formType: 'status',
                             payment_status: status
                         },
                         success: function(data) {

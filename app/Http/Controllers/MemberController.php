@@ -102,30 +102,29 @@ class MemberController extends Controller
     public function update(Request $request, string $id)
     {
         if ($request->formType == 'upload') {
-            if ($request->action == 'upload_receipt') {
-                $this->validate(
-                    $request,
-                    [
-                        'receipt' => 'required|mimes:jpeg,jpg,png,webp,pdf',
-                    ],
-                    [
-                        'receipt.required' => 'Please select receipt.',
-                        'receipt.mimes' => 'Only jpeg,jpg,png,webp, pdf file type is supported.',
-                    ]
-                );
+            $this->validate(
+                $request,
+                [
+                    'receipt' => 'required|mimes:jpeg,jpg,png,webp,pdf',
+                ],
+                [
+                    'receipt.required' => 'Please select receipt.',
+                    'receipt.mimes' => 'Only jpeg,jpg,png,webp, pdf file type is supported.',
+                ]
+            );
 
-                if ($request->hasfile('receipt')) {
-                    $filename = $request->file('receipt')->getClientOriginalName();
-                    $file_url = env('APP_URL') . "/receipt/" . $filename;
-                    Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
+            if ($request->hasfile('receipt')) {
+                $filename = $request->file('receipt')->getClientOriginalName();
+                $file_url = env('APP_URL') . "/receipt/" . $filename;
+                Storage::disk('public')->put($file_url, file_get_contents($request->file('receipt')));
 
-                    $data = Member::findOrFail($id);
-                    $data->receipt = $file_url;
-                    $data->save();
-                }
-
-                return redirect()->route('members.index')->with('toast_success', 'Upload receipt succeed!');
+                $data = Member::findOrFail($id);
+                $data->receipt = $file_url;
+                $data->save();
             }
+
+            return redirect()->route('members.index')->with('toast_success', 'Upload receipt succeed!');
+        } elseif ($request->formType == 'status') {
             $data = Member::findOrFail($id);
             $data->update($request->all());
             $data->save();
